@@ -1,16 +1,6 @@
 # Novactive eZ Solr Search Extra Bundle
 
-----
-
-This repository is what we call a "subtree split": a read-only copy of one directory of the main repository. 
-It is used by Composer to allow developers to depend on specific bundles.
-
-If you want to report or contribute, you should instead open your issue on the main repository: https://github.com/Novactive/Nova-eZPlatform-Bundles
-
-Documentation is available in this repository via `.md` files but also packaged here: https://novactive.github.io/Nova-eZPlatform-Bundles/master/SolrSearchExtraBundle/README.md.html
-
-----
-
+[![Build Status](https://img.shields.io/travis/Novactive/NovaeZSolrSearchExtraBundle.svg?style=flat-square&branch=develop-ezplatform)](https://travis-ci.org/Novactive/NovaeZSolrSearchExtraBundle)
 [![Downloads](https://img.shields.io/packagist/dt/novactive/ezsolrsearchextrabundle.svg?style=flat-square)](https://packagist.org/packages/novactive/ezsolrsearchextrabundle)
 [![Latest version](https://img.shields.io/github/release/Novactive/NovaeZSolrSearchExtraBundle.svg?style=flat-square)](https://github.com/Novactive/NovaeZSolrSearchExtraBundle/releases)
 [![License](https://img.shields.io/packagist/l/novactive/ezsolrsearchextrabundle.svg?style=flat-square)](LICENSE)
@@ -26,10 +16,16 @@ An eZPlatform bundle which extend the solr search handler.
     - boost on phrases matches
     - boost on exact matches
 - **[Implemented]** [Custom field configuration](./doc/custom_fields.md)
-- **[Implemented]** [Exact matches boosting configuration](./doc/exact_match_boost.md)
+- **[Implemented]** [Exact matches boosting configuration](./doc/custom_meta_fields.md)
 - **[WIP]** Boost doc based on publish date (newer docs score higher)
 - **[WIP]** Highlighting 
 - **[Implemented]** Manage stopwords and synonyms from eZ Platform admin interface
+
+## Requirements
+
+- eZ Platform
+- Solr Search Engine Bundle for eZ Platform
+- PHP 7.1+
 
 ## Installation
 

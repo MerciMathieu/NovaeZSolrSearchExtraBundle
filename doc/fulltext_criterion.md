@@ -1,5 +1,3 @@
-# Novactive eZ Solr Search Extra Bundle
-
 # FullText Criterion
 
 Added a new criterion for solr with the following features :
@@ -11,7 +9,6 @@ Added a new criterion for solr with the following features :
 Allow per field query boost
 
 Example
-
 ```php
 $query = new Query();
 ...

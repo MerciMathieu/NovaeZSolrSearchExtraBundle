@@ -33,12 +33,12 @@ class SynonymsAdapter implements AdapterInterface
      */
     public function __construct(string $setId, SynonymsService $synonymsService)
     {
-        $this->setId = $setId;
+        $this->setId           = $setId;
         $this->synonymsService = $synonymsService;
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function getNbResults()
     {
@@ -52,7 +52,7 @@ class SynonymsAdapter implements AdapterInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function getSlice($offset, $length)
     {

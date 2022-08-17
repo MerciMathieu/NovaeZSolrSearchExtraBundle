@@ -33,12 +33,12 @@ class StopwordsAdapter implements AdapterInterface
      */
     public function __construct(string $setId, StopwordsService $stopwordsService)
     {
-        $this->setId = $setId;
+        $this->setId            = $setId;
         $this->stopwordsService = $stopwordsService;
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function getNbResults()
     {
@@ -52,7 +52,7 @@ class StopwordsAdapter implements AdapterInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function getSlice($offset, $length)
     {

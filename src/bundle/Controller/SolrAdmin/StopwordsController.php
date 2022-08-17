@@ -46,7 +46,7 @@ class StopwordsController extends BaseController
     public function __construct(StopwordsService $stopwordsService, FormFactory $formFactory)
     {
         $this->stopwordsService = $stopwordsService;
-        $this->formFactory = $formFactory;
+        $this->formFactory      = $formFactory;
     }
 
     public function getWordsData($words)
@@ -67,27 +67,25 @@ class StopwordsController extends BaseController
     {
         $this->permissionAccess('solradmin', 'stopwords.view');
 
-        $manageAccess = $this->permissionManageAccess('solradmin', ['stopwords.delete']);
+        $manageAccess   = $this->permissionManageAccess('solradmin', ['stopwords.delete']);
         $viewParameters = [];
 
         if ($this->permissionResolver->hasAccess('solradmin', 'stopwords.create')) {
             $addForm = $this->formFactory->create(AddStopWordType::class, null);
             $addForm->handleRequest($request);
             if ($addForm->isSubmitted() && $addForm->isValid()) {
-                $data = $addForm->getData();
-                $words = $data['words'] ?? [];
+                $data  = $addForm->getData();
+                $words = $data['words'] ?? '';
                 $this->stopwordsService->addWords(
                     $setId,
                     array_map('trim', explode(',', $words))
                 );
 
                 $this->notificationHandler->success(
-                    $this->translator->trans(
+                    $this->translator->transChoice(
                         'solr_admin.action.stopwords.added',
-                        [
-                            '%words%' => $words,
-                            'count' => count($words),
-                        ],
+                        count($words),
+                        ['%words%' => $words],
                         'solr_admin'
                     )
                 );
@@ -105,9 +103,9 @@ class StopwordsController extends BaseController
         $pagerfanta->setCurrentPage(min($page, $pagerfanta->getNbPages()));
 
         $viewParameters += [
-            'pager' => $pagerfanta,
-            'setId' => $setId,
-            'noLayout' => $noLayout,
+            'pager'        => $pagerfanta,
+            'setId'        => $setId,
+            'noLayout'     => $noLayout,
             'manageAccess' => $manageAccess,
         ];
 
@@ -132,8 +130,8 @@ class StopwordsController extends BaseController
         return $this->redirectToRoute(
             'solr_admin.stopwords.index',
             [
-                'setId' => $setId,
-                'page' => 1,
+                'setId'    => $setId,
+                'page'     => 1,
                 'noLayout' => true,
             ]
         );
@@ -154,8 +152,8 @@ class StopwordsController extends BaseController
         return $this->redirectToRoute(
             'solr_admin.stopwords.index',
             [
-                'setId' => $setId,
-                'page' => 1,
+                'setId'    => $setId,
+                'page'     => 1,
                 'noLayout' => true,
             ]
         );

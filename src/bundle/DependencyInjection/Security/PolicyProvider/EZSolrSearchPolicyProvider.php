@@ -16,7 +16,7 @@ use eZ\Bundle\EzPublishCoreBundle\DependencyInjection\Security\PolicyProvider\Ya
 
 class EZSolrSearchPolicyProvider extends YamlPolicyProvider
 {
-    /** @var string bundle path */
+    /** @var string $path bundle path */
     protected $path;
 
     /**

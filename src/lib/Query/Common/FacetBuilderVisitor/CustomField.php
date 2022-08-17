@@ -27,11 +27,29 @@ class CustomField extends FacetBuilderVisitor implements FacetFieldVisitor
     {
         return new CustomFieldFacet(
             [
-                'name' => $facetBuilder->name,
+                'name'    => $facetBuilder->name,
                 'entries' => $this->mapData($data),
-                'field' => $facetBuilder->field,
+                'field'   => $facetBuilder->field,
             ]
         );
+    }
+
+    /**
+     * {@inheritdoc}.
+     */
+    protected function mapData(array $data)
+    {
+        $values = [];
+        for ($i=0; $i < count($data); ++$i) {
+            $key = $data[$i];
+            if (null === $key) {
+                $key = 'null';
+            }
+            $values[$key] = $data[$i + 1];
+            ++$i;
+        }
+
+        return $values;
     }
 
     /**
@@ -57,10 +75,17 @@ class CustomField extends FacetBuilderVisitor implements FacetFieldVisitor
 
         $excludeTags = implode(',', $excludeTags);
 
-        return [
-            'facet.field' => "{!ex={$excludeTags} key=${fieldId}}$facetBuilder->field",
-            "f.{$facetBuilder->field}.facet.limit" => $facetBuilder->limit,
+        $facetParams = [
+            'facet.field'                             => "{!ex={$excludeTags} key=${fieldId}}$facetBuilder->field",
+            "f.{$facetBuilder->field}.facet.limit"    => $facetBuilder->limit,
             "f.{$facetBuilder->field}.facet.mincount" => $facetBuilder->minCount,
+            "f.{$facetBuilder->field}.facet.missing"  => $facetBuilder->missing ? 'true' : 'false',
         ];
+
+        if(!empty($facetBuilder->excludeEntries)) {
+            $facetParams["f.{$facetBuilder->field}.facet.excludeTerms"] = implode(',', $facetBuilder->excludeEntries);
+        }
+
+        return $facetParams;
     }
 }
