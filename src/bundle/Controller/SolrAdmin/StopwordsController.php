@@ -19,7 +19,7 @@ use Novactive\EzSolrSearchExtra\Form\AddStopWordType;
 use Novactive\EzSolrSearchExtra\Pagination\Pagerfanta\StopwordsAdapter;
 use Pagerfanta\Pagerfanta;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\Form\FormFactory;
+use Symfony\Component\Form\FormFactoryInterface as FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 

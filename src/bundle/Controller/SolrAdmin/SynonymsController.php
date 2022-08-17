@@ -20,7 +20,7 @@ use Novactive\EzSolrSearchExtra\Form\AddSynonymsType;
 use Novactive\EzSolrSearchExtra\Pagination\Pagerfanta\SynonymsAdapter;
 use Pagerfanta\Pagerfanta;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\Form\FormFactory;
+use Symfony\Component\Form\FormFactoryInterface as FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
