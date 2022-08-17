@@ -12,8 +12,9 @@
 
 namespace Novactive\EzSolrSearchExtra\Query\SortClauseHandler;
 
+use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Query\QueryBuilder;
 use eZ\Publish\API\Repository\Values\Content\Query\SortClause as APISortClause;
-use eZ\Publish\Core\Persistence\Database\SelectQuery;
 use eZ\Publish\Core\Search\Legacy\Content\Common\Gateway\SortClauseHandler;
 use Novactive\EzSolrSearchExtra\Query\SortClause;
 
@@ -22,6 +23,11 @@ use Novactive\EzSolrSearchExtra\Query\SortClause;
  */
 class Score extends SortClauseHandler
 {
+    public function __construct(Connection $connection)
+    {
+        parent::__construct($connection);
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -33,8 +39,8 @@ class Score extends SortClauseHandler
     /**
      * {@inheritdoc}
      */
-    public function applySelect(SelectQuery $query, APISortClause $sortClause, $number)
+    public function applySelect(QueryBuilder $query, APISortClause $sortClause, $number): array
     {
-        return null;
+        return [];
     }
 }

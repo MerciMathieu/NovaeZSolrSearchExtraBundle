@@ -39,7 +39,7 @@ class QueryConverter extends BaseQueryConverter
     /**
      * {@inheritdoc}
      */
-    public function convert(Query $query)
+    public function convert(Query $query, array $languageSettings = [])
     {
         $params = $this->baseConverter->convert($query);
 

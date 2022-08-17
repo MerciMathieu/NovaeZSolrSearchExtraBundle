@@ -13,7 +13,7 @@
 namespace Novactive\EzSolrSearchExtra\Query\SortClauseHandler;
 
 use eZ\Publish\API\Repository\Values\Content\Query\SortClause as APISortClause;
-use eZ\Publish\Core\Persistence\Database\SelectQuery;
+use Doctrine\DBAL\Query\QueryBuilder;
 use eZ\Publish\Core\Search\Legacy\Content\Common\Gateway\SortClauseHandler;
 use Novactive\EzSolrSearchExtra\Query\SortClause;
 
@@ -33,8 +33,8 @@ class CustomField extends SortClauseHandler
     /**
      * {@inheritdoc}
      */
-    public function applySelect(SelectQuery $query, APISortClause $sortClause, $number)
+    public function applySelect(QueryBuilder $query, APISortClause $sortClause, int $number): array
     {
-        return null;
+        return [];
     }
 }
