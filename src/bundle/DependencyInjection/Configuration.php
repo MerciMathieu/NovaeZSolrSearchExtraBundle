@@ -28,8 +28,8 @@ class Configuration extends SiteAccessAware\Configuration
      */
     public function getConfigTreeBuilder()
     {
-        $treeBuilder = new TreeBuilder();
-        $rootNode    = $treeBuilder->root('ez_solr_search_extra');
+        $treeBuilder = new TreeBuilder('ez_solr_search_extra');
+        $rootNode    = $treeBuilder->getRootNode();
         $systemNode  = $this->generateScopeBaseNode($rootNode);
         $systemNode
                 ->arrayNode('fulltext_fields')
