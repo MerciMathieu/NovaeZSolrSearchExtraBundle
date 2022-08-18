@@ -152,7 +152,7 @@ class MultipleFieldsFullText extends Criterion implements CustomFieldInterface
         }
     }
 
-    public function getSpecifications()
+    public function getSpecifications(): array
     {
         return [
             new Specifications(Criterion\Operator::LIKE, Specifications::FORMAT_SINGLE),
@@ -179,7 +179,7 @@ class MultipleFieldsFullText extends Criterion implements CustomFieldInterface
      * @param string $field
      * @param string $customField
      */
-    public function setCustomField($type, $field, $customField)
+    public function setCustomField($type, $field, $customField): void
     {
         $this->customFields[$type][$field] = $customField;
     }
@@ -192,7 +192,7 @@ class MultipleFieldsFullText extends Criterion implements CustomFieldInterface
      * @param string $type
      * @param string $field
      */
-    public function getCustomField($type, $field)
+    public function getCustomField($type, $field): ?string
     {
         if (
             !isset($this->customFields[$type]) ||
