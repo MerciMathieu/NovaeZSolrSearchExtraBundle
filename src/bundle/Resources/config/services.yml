@@ -36,17 +36,17 @@ services:
     arguments:
       $contentTypeHandler: '@ezpublish.spi.persistence.content_type_handler'
     calls:
-    - ['setFieldsConfig', ['$fulltext_fields;nova_solr_extra$']]
+      - ['setFieldsConfig', ['$fulltext_fields;nova_solr_extra$']]
     tags:
-    - {name: ezpublish.search.solr.field_mapper.content_translation}
+      - {name: ezpublish.search.solr.field_mapper.content_translation}
 
   Novactive\EzSolrSearchExtra\FieldMapper\ContentTranslationFieldMapper\CustomFieldMapper:
     arguments:
       $contentTypeHandler: '@ezpublish.spi.persistence.content_type_handler'
     calls:
-    - ['setFieldsConfig', ['$custom_fields;nova_solr_extra$']]
+      - ['setFieldsConfig', ['$custom_fields;nova_solr_extra$']]
     tags:
-    - {name: ezpublish.search.solr.field_mapper.block_translation}
+      - {name: ezpublish.search.solr.field_mapper.block_translation}
 
   Novactive\EzSolrSearchExtra\FieldMapper\BinaryFileFieldMapper:
     arguments:
@@ -58,20 +58,20 @@ services:
     arguments:
       $contentTypeHandler: '@ezpublish.spi.persistence.content_type_handler'
       $binaryFileFieldTypeIndentifiers:
-      - ezbinaryfile
+        - ezbinaryfile
     calls:
-    - ['setEnabled', ['$enable_pdf_indexation;nova_solr_extra$']]
+      - ['setEnabled', ['$enable_pdf_indexation;nova_solr_extra$']]
     tags:
-    - {name: ezpublish.search.solr.field_mapper.content_translation}
+      - {name: ezpublish.search.solr.field_mapper.content_translation}
 
   Novactive\EzSolrSearchExtra\FieldMapper\ContentTranslationFieldMapper\PublishDateFieldMapper:
     lazy: true
     arguments:
       $contentTypeHandler: '@ezpublish.spi.persistence.content_type_handler'
     calls:
-    - ['setFieldIdentifiers', ['$publishdate_fields;nova_solr_extra$']]
+      - ['setFieldIdentifiers', ['$publishdate_fields;nova_solr_extra$']]
     tags:
-    - {name: ezpublish.search.solr.field_mapper.content_translation}
+      - {name: ezpublish.search.solr.field_mapper.content_translation}
 
   Novactive\EzSolrSearchExtra\TextExtractor\TikaTextExtractor:
     arguments:
@@ -83,24 +83,24 @@ services:
 
   Novactive\EzSolrSearchExtra\Query\Content\CriterionVisitor\MultipleFieldsFullText:
     tags:
-    - {name: ezpublish.search.solr.query.content.criterion_visitor}
+      - {name: ezpublish.search.solr.query.content.criterion_visitor}
 
   Novactive\EzSolrSearchExtra\Query\Content\CriterionVisitor\FilterTag:
     tags:
-    - {name: ezpublish.search.solr.query.content.criterion_visitor}
-    - {name: ezpublish.search.solr.query.location.criterion_visitor}
+      - {name: ezpublish.search.solr.query.content.criterion_visitor}
+      - {name: ezpublish.search.solr.query.location.criterion_visitor}
 
-  Novactive\EzSolrSearchExtra\Query\CriterionHandler\MultipleFieldsFullText:
-#    arguments:
-#      $dbHandler: "@ezpublish.api.storage_engine.legacy.dbhandler"
-    tags:
-    - {name: ezpublish.search.legacy.gateway.criterion_handler.content}
-    - {name: ezpublish.search.legacy.gateway.criterion_handler.location}
+  #  Novactive\EzSolrSearchExtra\Query\CriterionHandler\MultipleFieldsFullText:
+  ##    arguments:
+  ##      $dbHandler: "@ezpublish.api.storage_engine.legacy.dbhandler"
+  #    tags:
+  #    - {name: ezpublish.search.legacy.gateway.criterion_handler.content}
+  #    - {name: ezpublish.search.legacy.gateway.criterion_handler.location}
 
   Novactive\EzSolrSearchExtra\Query\SortClauseVisitor\Score:
     tags:
-    - {name: ezpublish.search.solr.query.content.sort_clause_visitor}
-    - {name: ezpublish.search.solr.query.location.sort_clause_visitor}
+      - {name: ezpublish.search.solr.query.content.sort_clause_visitor}
+      - {name: ezpublish.search.solr.query.location.sort_clause_visitor}
 
   Novactive\EzSolrSearchExtra\Query\SortClauseHandler\Score:
     autowire: false
@@ -108,13 +108,13 @@ services:
     public: false
     parent: ezpublish.search.legacy.gateway.sort_clause_handler.base
     tags:
-    - {name: ezpublish.search.legacy.gateway.sort_clause_handler.content}
-    - {name: ezpublish.search.legacy.gateway.sort_clause_handler.location}
+      - {name: ezpublish.search.legacy.gateway.sort_clause_handler.content}
+      - {name: ezpublish.search.legacy.gateway.sort_clause_handler.location}
 
   Novactive\EzSolrSearchExtra\Query\SortClauseVisitor\CustomField:
     tags:
-    - {name: ezpublish.search.solr.query.content.sort_clause_visitor}
-    - {name: ezpublish.search.solr.query.location.sort_clause_visitor}
+      - {name: ezpublish.search.solr.query.content.sort_clause_visitor}
+      - {name: ezpublish.search.solr.query.location.sort_clause_visitor}
 
   Novactive\EzSolrSearchExtra\Query\SortClauseHandler\CustomField:
     autowire: false
@@ -122,13 +122,13 @@ services:
     public: false
     parent: ezpublish.search.legacy.gateway.sort_clause_handler.base
     tags:
-    - {name: ezpublish.search.legacy.gateway.sort_clause_handler.content}
-    - {name: ezpublish.search.legacy.gateway.sort_clause_handler.location}
+      - {name: ezpublish.search.legacy.gateway.sort_clause_handler.content}
+      - {name: ezpublish.search.legacy.gateway.sort_clause_handler.location}
 
   Novactive\EzSolrSearchExtra\Query\Common\FacetBuilderVisitor\CustomField:
     tags:
-    - {name: ezpublish.search.solr.query.content.facet_builder_visitor}
-    - {name: ezpublish.search.solr.query.location.facet_builder_visitor}
+      - {name: ezpublish.search.solr.query.content.facet_builder_visitor}
+      - {name: ezpublish.search.solr.query.location.facet_builder_visitor}
 
 
   nova_solr_extra.search.solr.query.content.query_converter:
