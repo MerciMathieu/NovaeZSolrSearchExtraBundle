@@ -12,12 +12,12 @@
 
 namespace Novactive\EzSolrSearchExtra\FieldMapper\ContentTranslationFieldMapper;
 
-use eZ\Publish\Core\Search\Common\FieldRegistry;
 use eZ\Publish\SPI\Persistence\Content;
 use eZ\Publish\SPI\Persistence\Content\Type\Handler as ContentTypeHandler;
 use eZ\Publish\SPI\Search\Field;
 use eZ\Publish\SPI\Search\FieldType;
 use EzSystems\EzPlatformSolrSearchEngine\FieldMapper\ContentTranslationFieldMapper;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class PublishDateFieldMapper extends ContentTranslationFieldMapper
 {
@@ -39,17 +39,12 @@ class PublishDateFieldMapper extends ContentTranslationFieldMapper
     protected $contentTypeHandler;
 
     /**
-     * @var \eZ\Publish\Core\Search\Common\FieldRegistry
-     */
-    protected $fieldRegistry;
-
-    /**
      * PublishDateFieldMapper constructor.
      */
-    public function __construct(ContentTypeHandler $contentTypeHandler, FieldRegistry $fieldRegistry)
+    public function __construct(ContentTypeHandler $contentTypeHandler, ContainerInterface $container)
     {
         $this->contentTypeHandler = $contentTypeHandler;
-        $this->fieldRegistry      = $fieldRegistry;
+        $this->container = $container;
     }
 
     public function setFieldIdentifiers(array $fieldIdentifiers): void
@@ -102,7 +97,8 @@ class PublishDateFieldMapper extends ContentTranslationFieldMapper
                     continue;
                 }
 
-                $fieldType   = $this->fieldRegistry->getType($field->type);
+                $fieldRegistry = $this->container->get('ezpublish.search.common.field_registry');
+                $fieldType   = $fieldRegistry->getType($field->type);
                 $indexFields = $fieldType->getIndexData($field, $fieldDefinition);
 
                 foreach ($indexFields as $indexField) {

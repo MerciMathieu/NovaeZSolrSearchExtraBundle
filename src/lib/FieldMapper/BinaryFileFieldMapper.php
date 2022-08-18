@@ -19,9 +19,9 @@ use eZ\Publish\SPI\Persistence\Content\Field as SPIField;
 use eZ\Publish\SPI\Persistence\Content\Type as SPIContentType;
 use eZ\Publish\SPI\Search\Field as SPISearchField;
 use eZ\Publish\SPI\Search\FieldType as SPISearchFieldType;
-use EzSystems\EzPlatformSolrSearchEngine\FieldMapper\BoostFactorProvider;
 use Novactive\EzSolrSearchExtra\TextExtractor\TextExtractorInterface;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Class BinaryFileFieldMapper.
@@ -40,28 +40,27 @@ class BinaryFileFieldMapper
     /** @var IOService */
     private $ioService;
 
-    /** @var BoostFactorProvider */
-    private $boostFactorProvider;
-
     /** @var TextExtractorInterface */
     private $textExtractor;
 
     /** @var LoggerInterface */
     private $logger;
 
+    private $container;
+
     /**
      * BinaryFileFieldMapper constructor.
      */
     public function __construct(
         IOService $ioService,
-        BoostFactorProvider $boostFactorProvider,
         TextExtractorInterface $textExtractor,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        ContainerInterface $container
     ) {
         $this->ioService           = $ioService;
-        $this->boostFactorProvider = $boostFactorProvider;
         $this->textExtractor       = $textExtractor;
         $this->logger              = $logger;
+        $this->container           = $container;
     }
 
     /**
@@ -73,8 +72,8 @@ class BinaryFileFieldMapper
         foreach ($contentType->fieldDefinitions as $fieldDefinition) {
             if (
                 $fieldDefinition->id !== $field->fieldDefinitionId
-                 || !$fieldDefinition->isSearchable
-                 || !$field->value->externalData
+                || !$fieldDefinition->isSearchable
+                || !$field->value->externalData
             ) {
                 continue;
             }
@@ -117,7 +116,8 @@ class BinaryFileFieldMapper
     private function getIndexFieldType(SPIContentType $contentType)
     {
         $newFieldType        = new SPISearchFieldType\TextField();
-        $newFieldType->boost = $this->boostFactorProvider->getContentMetaFieldBoostFactor(
+        $boostFactorProvider = $this->container->get('ezpublish.search.solr.field_mapper.boost_factor_provider');
+        $newFieldType->boost = $boostFactorProvider->getContentMetaFieldBoostFactor(
             $contentType,
             'text'
         );
