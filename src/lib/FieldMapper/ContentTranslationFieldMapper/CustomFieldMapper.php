@@ -46,7 +46,7 @@ class CustomFieldMapper extends ContentTranslationFieldMapper
         $this->container = $container;
     }
 
-    public function setFieldsConfig(array $fieldsConfig): void
+    public function setFieldsConfig($fieldsConfig): void
     {
         $this->fieldsConfig = $fieldsConfig;
     }
