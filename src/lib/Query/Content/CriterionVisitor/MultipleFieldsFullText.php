@@ -13,50 +13,19 @@
 namespace Novactive\EzSolrSearchExtra\Query\Content\CriterionVisitor;
 
 use eZ\Publish\API\Repository\Values\Content\Query\Criterion;
-use eZ\Publish\Core\Search\Common\FieldNameResolver;
 use EzSystems\EzPlatformSolrSearchEngine\Query\CriterionVisitor;
 use Novactive\EzSolrSearchExtra\Query\Content\Criterion\MultipleFieldsFullText as MultipleFieldsFullTextCriterion;
-use QueryTranslator\Languages\Galach\Generators\ExtendedDisMax;
-use QueryTranslator\Languages\Galach\Parser;
-use QueryTranslator\Languages\Galach\Tokenizer;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class MultipleFieldsFullText extends CriterionVisitor
 {
     /**
-     * Field map.
-     *
-     * @var \eZ\Publish\Core\Search\Common\FieldNameResolver
-     */
-    protected $fieldNameResolver;
-
-    /**
-     * @var \QueryTranslator\Languages\Galach\Tokenizer
-     */
-    protected $tokenizer;
-
-    /**
-     * @var \QueryTranslator\Languages\Galach\Parser
-     */
-    protected $parser;
-
-    /**
-     * @var \QueryTranslator\Languages\Galach\Generators\ExtendedDisMax
-     */
-    protected $generator;
-
-    /**
      * Create from content type handler and field registry.
      */
     public function __construct(
-        FieldNameResolver $fieldNameResolver,
-        Tokenizer $tokenizer,
-        Parser $parser,
-        ExtendedDisMax $generator
+        ContainerInterface $container
     ) {
-        $this->fieldNameResolver = $fieldNameResolver;
-        $this->tokenizer         = $tokenizer;
-        $this->parser            = $parser;
-        $this->generator         = $generator;
+        $this->container         = $container;
     }
 
     /**
@@ -68,7 +37,8 @@ class MultipleFieldsFullText extends CriterionVisitor
      */
     protected function getSearchFields(Criterion $criterion, $fieldDefinitionIdentifier)
     {
-        return $this->fieldNameResolver->getFieldTypes($criterion, $fieldDefinitionIdentifier);
+        $fieldNameResolver = $this->container->get('ezpublish.search.common.field_name_resolver');
+        return $fieldNameResolver->getFieldTypes($criterion, $fieldDefinitionIdentifier);
     }
 
     /**
@@ -90,16 +60,20 @@ class MultipleFieldsFullText extends CriterionVisitor
      */
     public function visit(Criterion $criterion, CriterionVisitor $subVisitor = null)
     {
+        $tokenizer = $this->container->get('ezpublish.search.solr.query.query_translator.galach.tokenizer');
         /** @var \Novactive\EzSolrSearchExtra\Query\Content\Criterion\MultipleFieldsFullText $criterion */
-        $tokenSequence = $this->tokenizer->tokenize($criterion->value);
-        $syntaxTree    = $this->parser->parse($tokenSequence);
+        $tokenSequence = $tokenizer->tokenize($criterion->value);
+
+        $parser = $this->container->get('ezpublish.search.solr.query.query_translator.galach.parser');
+        $syntaxTree    = $parser->parse($tokenSequence);
 
         $options = [];
         if ($criterion->fuzziness < 1) {
             $options['fuzziness'] = $criterion->fuzziness;
         }
 
-        $queryString        = $this->generator->generate($syntaxTree, $options);
+        $generator = $this->container->get('ezpublish.search.solr.query.query_translator.galach.generator.edismax');
+        $queryString        = $generator->generate($syntaxTree, $options);
         $queryStringEscaped = $this->escapeQuote($queryString);
         $queryFields        = $this->getQueryFields($criterion);
 
