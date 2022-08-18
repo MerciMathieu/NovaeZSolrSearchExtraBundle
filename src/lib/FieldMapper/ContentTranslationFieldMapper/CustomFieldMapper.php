@@ -32,10 +32,6 @@ class CustomFieldMapper extends ContentTranslationFieldMapper
      */
     protected $contentTypeHandler;
 
-    /**
-     * @var \EzSystems\EzPlatformSolrSearchEngine\FieldMapper\BoostFactorProvider
-     */
-    protected $boostFactorProvider;
 
     protected $container;
 
@@ -45,11 +41,9 @@ class CustomFieldMapper extends ContentTranslationFieldMapper
     public function __construct(
         ContentType\Handler $contentTypeHandler,
         ContainerInterface $container,
-        \EzSystems\EzPlatformSolrSearchEngine\FieldMapper\BoostFactorProvider $boostFactorProvider
     ) {
         $this->contentTypeHandler  = $contentTypeHandler;
         $this->container = $container;
-        $this->boostFactorProvider = $boostFactorProvider;
     }
 
     public function setFieldsConfig(array $fieldsConfig): void
@@ -187,8 +181,10 @@ class CustomFieldMapper extends ContentTranslationFieldMapper
             return $fieldType;
         }
 
+        $boostFactorProvider = $this->container->get("ezpublish.search.solr.field_mapper.boost_factor_provider");
+
         $fieldType        = clone $fieldType;
-        $fieldType->boost = $this->boostFactorProvider->getContentFieldBoostFactor(
+        $fieldType->boost = $boostFactorProvider->getContentFieldBoostFactor(
             $contentType,
             $fieldDefinition
         );
