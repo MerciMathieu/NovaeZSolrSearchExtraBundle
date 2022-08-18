@@ -18,6 +18,7 @@ use eZ\Publish\SPI\Persistence\Content\Type\FieldDefinition;
 use eZ\Publish\SPI\Search\Field;
 use eZ\Publish\SPI\Search\FieldType;
 use EzSystems\EzPlatformSolrSearchEngine\FieldMapper\ContentTranslationFieldMapper;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class CustomFieldMapper extends ContentTranslationFieldMapper
 {
@@ -32,32 +33,22 @@ class CustomFieldMapper extends ContentTranslationFieldMapper
     protected $contentTypeHandler;
 
     /**
-     * @var \eZ\Publish\Core\Search\Common\FieldRegistry
-     */
-    protected $fieldRegistry;
-
-    /**
-     * @var \eZ\Publish\Core\Search\Common\FieldNameGenerator
-     */
-    protected $fieldNameGenerator;
-
-    /**
      * @var \EzSystems\EzPlatformSolrSearchEngine\FieldMapper\BoostFactorProvider
      */
     protected $boostFactorProvider;
+
+    protected $container;
 
     /**
      * CustomFulltextFieldMapper constructor.
      */
     public function __construct(
         ContentType\Handler $contentTypeHandler,
-        \eZ\Publish\Core\Search\Common\FieldRegistry $fieldRegistry,
-        \eZ\Publish\Core\Search\Common\FieldNameGenerator $fieldNameGenerator,
+        ContainerInterface $container,
         \EzSystems\EzPlatformSolrSearchEngine\FieldMapper\BoostFactorProvider $boostFactorProvider
     ) {
         $this->contentTypeHandler  = $contentTypeHandler;
-        $this->fieldRegistry       = $fieldRegistry;
-        $this->fieldNameGenerator  = $fieldNameGenerator;
+        $this->container = $container;
         $this->boostFactorProvider = $boostFactorProvider;
     }
 
@@ -105,7 +96,9 @@ class CustomFieldMapper extends ContentTranslationFieldMapper
                     continue;
                 }
 
-                $fieldType   = $this->fieldRegistry->getType($field->type);
+                $fieldRegistry = $this->container->get('ezpublish.search.common.field_registry');
+
+                $fieldType   = $fieldRegistry->getType($field->type);
                 $indexFields = $fieldType->getIndexData($field, $fieldDefinition);
 
                 foreach ($indexFields as $indexField) {
@@ -138,9 +131,11 @@ class CustomFieldMapper extends ContentTranslationFieldMapper
             return;
         }
 
+        $fieldNameGenerator = $this->container->get("ezpublish.search.common.field_name_generator");
+
         foreach ($fieldNames as $fieldName) {
             $fields[] = new Field(
-                $this->fieldNameGenerator->getName(
+                $fieldNameGenerator->getName(
                     $indexField->name,
                     $fieldName
                 ),
