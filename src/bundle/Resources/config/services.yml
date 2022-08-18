@@ -146,3 +146,23 @@ services:
     arguments:
       - '@nova_solr_extra.search.solr.query.location.query_converter.inner'
       - '@ezpublish.search.solr.query.location.criterion_visitor.aggregate'
+
+  ezpublish.search.solr.query.query_translator.galach.token_extractor:
+    public: true
+    class: QueryTranslator\Languages\Galach\TokenExtractor\Text
+
+  ezpublish.search.solr.query.query_translator.galach.tokenizer:
+    public: true
+    class: QueryTranslator\Languages\Galach\Tokenizer
+    arguments:
+      - "@ezpublish.search.solr.query.query_translator.galach.token_extractor"
+
+  ezpublish.search.solr.query.query_translator.galach.parser:
+    public: true
+    class: QueryTranslator\Languages\Galach\Parser
+
+  ezpublish.search.solr.query.query_translator.galach.generator.edismax:
+    public: true
+    class: QueryTranslator\Languages\Galach\Generators\ExtendedDisMax
+    arguments:
+      - "@ezpublish.search.solr.query.query_translator.galach.generator.common.aggregate"
