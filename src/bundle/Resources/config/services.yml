@@ -90,12 +90,12 @@ services:
       - {name: ezpublish.search.solr.query.content.criterion_visitor}
       - {name: ezpublish.search.solr.query.location.criterion_visitor}
 
-  #  Novactive\EzSolrSearchExtra\Query\CriterionHandler\MultipleFieldsFullText:
-  ##    arguments:
-  ##      $dbHandler: "@ezpublish.api.storage_engine.legacy.dbhandler"
-  #    tags:
-  #    - {name: ezpublish.search.legacy.gateway.criterion_handler.content}
-  #    - {name: ezpublish.search.legacy.gateway.criterion_handler.location}
+  Novactive\EzSolrSearchExtra\Query\CriterionHandler\MultipleFieldsFullText:
+  #    arguments:
+  #      $dbHandler: "@ezpublish.api.storage_engine.legacy.dbhandler"
+      tags:
+      - {name: ezpublish.search.legacy.gateway.criterion_handler.content}
+      - {name: ezpublish.search.legacy.gateway.criterion_handler.location}
 
   Novactive\EzSolrSearchExtra\Query\SortClauseVisitor\Score:
     tags:
