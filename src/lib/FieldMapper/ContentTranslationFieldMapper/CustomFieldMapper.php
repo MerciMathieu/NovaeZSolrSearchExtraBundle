@@ -40,7 +40,7 @@ class CustomFieldMapper extends ContentTranslationFieldMapper
      */
     public function __construct(
         ContentType\Handler $contentTypeHandler,
-        ContainerInterface $container,
+        ContainerInterface $container
     ) {
         $this->contentTypeHandler  = $contentTypeHandler;
         $this->container = $container;
